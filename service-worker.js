@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/horizon-curve-visualizer/precache-manifest.6c0f36afe70822889cc281b25cba7fd5.js"
+  "/horizon-curve-visualizer/precache-manifest.f4b058332ece3972c930b7bd37980f41.js"
 );
 
 workbox.clientsClaim();
