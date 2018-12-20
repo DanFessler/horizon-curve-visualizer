@@ -78,6 +78,10 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Horizon Curvature Visualizer</h1>
+        Source code:{" "}
+        <a href="https://github.com/DanFessler/horizon-curve-visualizer">
+          https://github.com/DanFessler/horizon-curve-visualizer
+        </a>
         <p>
           This is a visualizer to give you a rough idea of how curved the
           horizon should appear at a given altitude with a known camera FOV.
