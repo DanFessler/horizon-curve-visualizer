@@ -16,6 +16,7 @@ class App extends Component {
     this.setState({ ctx: this.refs.canvas.getContext("2d") });
     params.fov = params.fov ? params.fov : 60;
     params.alt = params.alt ? params.alt : 0;
+    params.unit = params.unit ? params.unit : "miles";
   }
 
   componentDidUpdate() {
@@ -53,7 +54,7 @@ class App extends Component {
     params.fov = Math.max(Math.min(e.target.value, 175), 1);
   };
   getHorizonDistance = () => {
-    const altitude = Math.max(this.getAltitude(), 0.001);
+    const altitude = Math.max(this.getAltitude(params.unit), 0.001);
     const radius = this.getEarthRadius();
     return Math.sqrt(Math.pow(altitude, 2) + 2 * radius * altitude);
   };
@@ -65,8 +66,18 @@ class App extends Component {
   getEarthRadius = () => {
     return 3959;
   };
-  getAltitude = () => {
-    return params.alt;
+  getAltitude = units => {
+    switch (units) {
+      case "feet":
+        return params.alt / 5280;
+      case "meters":
+        return params.alt / 1609.34;
+      case "kilometers":
+        return params.alt / 1.60934;
+      default:
+        // miles
+        return params.alt;
+    }
   };
   getPixelRadius = () => {
     const radius = this.getEarthRadius();
@@ -75,10 +86,14 @@ class App extends Component {
     // const result = (radius / halfLength) * halfWidth
     const result = (halfWidth * radius) / halfLength;
     // const result = 1000;
-    console.log(result);
+    // console.log(result);
     return result;
   };
   render() {
+    let resultUnits =
+      params.unit === "feet" || params.unit === "miles"
+        ? "miles"
+        : "kilometers";
     return (
       <div className="App">
         <h1>Horizon Curvature Visualizer</h1>
@@ -97,13 +112,14 @@ class App extends Component {
         <br />
         <div style={{ display: "flex" }}>
           <div style={{ paddingRight: 32 }}>
-            <label>FOV:</label>
+            <label>HFOV:</label>
             <br />
             <input
               name="FOV"
               type="number"
               value={params.fov}
               onChange={this.handleFOVChange}
+              onClick={e => e.target.select()}
             />
             <i> degrees</i>
           </div>
@@ -116,13 +132,28 @@ class App extends Component {
               type="number"
               value={params.alt}
               onChange={this.handleAltitudeChange}
+              onClick={e => e.target.select()}
             />
             {/* <i> miles</i> */}
-            <select style={{ height: 21, boxSizing: "border-box" }}>
-              <option>miles</option>
-              <option>feet</option>
-              <option>meters</option>
-              <option>kilometers</option>
+            <select
+              style={{ height: 21, boxSizing: "border-box" }}
+              onChange={e => (params.unit = e.target.value)}
+            >
+              <option value="feet" selected={params.unit === "feet"}>
+                feet
+              </option>
+              <option value="miles" selected={params.unit === "miles"}>
+                miles
+              </option>
+              <option value="meters" selected={params.unit === "meters"}>
+                meters
+              </option>
+              <option
+                value="kilometers"
+                selected={params.unit === "kilometers"}
+              >
+                kilometers
+              </option>
             </select>
           </div>
         </div>
@@ -135,10 +166,16 @@ class App extends Component {
         >
           <div style={{ position: "absolute", padding: 8 }}>
             Horizon Distance: &nbsp;
-            {this.getHorizonDistance(params.alt).toFixed(2)} miles
+            {this.getHorizonDistance(this.getAltitude(resultUnits)).toFixed(
+              2
+            )}{" "}
+            {resultUnits}
             <br />
             Horizon length: &nbsp;
-            {this.getHorizonLength(params.alt).toFixed(2)} miles
+            {this.getHorizonLength(this.getAltitude(resultUnits)).toFixed(
+              2
+            )}{" "}
+            {resultUnits}
             <br />
           </div>
           <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />
