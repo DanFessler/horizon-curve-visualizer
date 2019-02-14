@@ -6,6 +6,6 @@ label {
   width: 80px;
   display: inline-block;
   font-weight: bold;
-  text-align: right;
+  /* text-align: right; */
   padding-right: 8px;
 }

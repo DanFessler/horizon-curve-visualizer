@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { view } from "react-easy-state";
+import { params, path } from "react-easy-params";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -7,13 +9,13 @@ const canvasHeight = 768;
 
 class App extends Component {
   state = {
-    ctx: null,
-    altitude: 0,
-    fov: 60
+    ctx: null
   };
 
   componentDidMount() {
     this.setState({ ctx: this.refs.canvas.getContext("2d") });
+    params.fov = params.fov ? params.fov : 60;
+    params.alt = params.alt ? params.alt : 0;
   }
 
   componentDidUpdate() {
@@ -23,7 +25,7 @@ class App extends Component {
   renderCanvas = () => {
     const ctx = this.state.ctx;
 
-    let hHOV = (this.state.fov * (Math.PI / 180)) / 2;
+    let hHOV = (params.fov * (Math.PI / 180)) / 2;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.strokeStyle = "rgba(0, 0, 0, 1)";
@@ -43,10 +45,12 @@ class App extends Component {
   };
 
   handleAltitudeChange = e => {
-    this.setState({ altitude: Math.max(e.target.value, 0) });
+    // this.setState({ altitude: Math.max(e.target.value, 0) });
+    params.alt = Math.max(e.target.value, 0);
   };
   handleFOVChange = e => {
-    this.setState({ fov: Math.max(Math.min(e.target.value, 180), 1) });
+    // this.setState({ fov: Math.max(Math.min(e.target.value, 180), 1) });
+    params.fov = Math.max(Math.min(e.target.value, 175), 1);
   };
   getHorizonDistance = () => {
     const altitude = Math.max(this.getAltitude(), 0.001);
@@ -54,7 +58,7 @@ class App extends Component {
     return Math.sqrt(Math.pow(altitude, 2) + 2 * radius * altitude);
   };
   getHorizonLength = () => {
-    const fov = Math.min(this.state.fov, 179.9) * (Math.PI / 180);
+    const fov = Math.min(params.fov, 179.9) * (Math.PI / 180);
     const distance = this.getHorizonDistance();
     return distance * Math.tan(fov / 2) * 2;
   };
@@ -62,7 +66,7 @@ class App extends Component {
     return 3959;
   };
   getAltitude = () => {
-    return this.state.altitude;
+    return params.alt;
   };
   getPixelRadius = () => {
     const radius = this.getEarthRadius();
@@ -91,26 +95,38 @@ class App extends Component {
           sake of simplicity.
         </p>
         <br />
-        <p>
-          <label>FOV:</label>
-          <input
-            name="FOV"
-            type="number"
-            value={this.state.fov}
-            onChange={this.handleFOVChange}
-          />
-          <i> degrees</i>
-        </p>
-        <p>
-          <label>Altitude:</label>
-          <input
-            name="altitude"
-            type="number"
-            value={this.state.altitude}
-            onChange={this.handleAltitudeChange}
-          />
-          <i> miles</i>
-        </p>
+        <div style={{ display: "flex" }}>
+          <div style={{ paddingRight: 32 }}>
+            <label>FOV:</label>
+            <br />
+            <input
+              name="FOV"
+              type="number"
+              value={params.fov}
+              onChange={this.handleFOVChange}
+            />
+            <i> degrees</i>
+          </div>
+          <div>
+            <label>Altitude:</label>
+            <br />
+            <input
+              style={{ height: 21, boxSizing: "border-box" }}
+              name="altitude"
+              type="number"
+              value={params.alt}
+              onChange={this.handleAltitudeChange}
+            />
+            {/* <i> miles</i> */}
+            <select style={{ height: 21, boxSizing: "border-box" }}>
+              <option>miles</option>
+              <option>feet</option>
+              <option>meters</option>
+              <option>kilometers</option>
+            </select>
+          </div>
+        </div>
+        <br />
         <div
           style={{
             border: "1px solid gray",
@@ -119,10 +135,10 @@ class App extends Component {
         >
           <div style={{ position: "absolute", padding: 8 }}>
             Horizon Distance: &nbsp;
-            {this.getHorizonDistance(this.state.altitude).toFixed(2)} miles
+            {this.getHorizonDistance(params.alt).toFixed(2)} miles
             <br />
             Horizon length: &nbsp;
-            {this.getHorizonLength(this.state.altitude).toFixed(2)} miles
+            {this.getHorizonLength(params.alt).toFixed(2)} miles
             <br />
           </div>
           <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />
@@ -132,4 +148,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default view(App);
