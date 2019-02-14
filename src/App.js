@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { view } from "react-easy-state";
-import { params, path } from "react-easy-params";
-import logo from "./logo.svg";
+import { params } from "react-easy-params";
 import "./App.css";
 
 const canvasWidth = 1024;
@@ -25,9 +24,6 @@ class App extends Component {
 
   renderCanvas = () => {
     const ctx = this.state.ctx;
-
-    let hHOV = (params.fov * (Math.PI / 180)) / 2;
-
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.strokeStyle = "rgba(0, 0, 0, 1)";
     ctx.beginPath();
@@ -138,22 +134,12 @@ class App extends Component {
             <select
               style={{ height: 21, boxSizing: "border-box" }}
               onChange={e => (params.unit = e.target.value)}
+              value={params.unit}
             >
-              <option value="feet" selected={params.unit === "feet"}>
-                feet
-              </option>
-              <option value="miles" selected={params.unit === "miles"}>
-                miles
-              </option>
-              <option value="meters" selected={params.unit === "meters"}>
-                meters
-              </option>
-              <option
-                value="kilometers"
-                selected={params.unit === "kilometers"}
-              >
-                kilometers
-              </option>
+              <option value="feet">feet</option>
+              <option value="miles">miles</option>
+              <option value="meters">meters</option>
+              <option value="kilometers">kilometers</option>
             </select>
           </div>
         </div>
