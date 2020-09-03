@@ -1,13 +1,13 @@
 {
-  "main.css": "/horizon-curve-visualizer/static/css/main.9c46138a.chunk.css",
-  "main.js": "/horizon-curve-visualizer/static/js/main.270b20d8.chunk.js",
-  "main.js.map": "/horizon-curve-visualizer/static/js/main.270b20d8.chunk.js.map",
-  "static/js/1.2c568cb7.chunk.js": "/horizon-curve-visualizer/static/js/1.2c568cb7.chunk.js",
-  "static/js/1.2c568cb7.chunk.js.map": "/horizon-curve-visualizer/static/js/1.2c568cb7.chunk.js.map",
+  "main.css": "/horizon-curve-visualizer/static/css/main.c5472384.chunk.css",
+  "main.js": "/horizon-curve-visualizer/static/js/main.4ddb73fe.chunk.js",
+  "main.js.map": "/horizon-curve-visualizer/static/js/main.4ddb73fe.chunk.js.map",
+  "static/js/1.9d08f188.chunk.js": "/horizon-curve-visualizer/static/js/1.9d08f188.chunk.js",
+  "static/js/1.9d08f188.chunk.js.map": "/horizon-curve-visualizer/static/js/1.9d08f188.chunk.js.map",
   "runtime~main.js": "/horizon-curve-visualizer/static/js/runtime~main.bd2e6fec.js",
   "runtime~main.js.map": "/horizon-curve-visualizer/static/js/runtime~main.bd2e6fec.js.map",
-  "static/css/main.9c46138a.chunk.css.map": "/horizon-curve-visualizer/static/css/main.9c46138a.chunk.css.map",
+  "static/css/main.c5472384.chunk.css.map": "/horizon-curve-visualizer/static/css/main.c5472384.chunk.css.map",
   "index.html": "/horizon-curve-visualizer/index.html",
-  "precache-manifest.bacd86209c53b7d97c9477e38770f43a.js": "/horizon-curve-visualizer/precache-manifest.bacd86209c53b7d97c9477e38770f43a.js",
+  "precache-manifest.330cc505a81b88c63ec658a75eabf17f.js": "/horizon-curve-visualizer/precache-manifest.330cc505a81b88c63ec658a75eabf17f.js",
   "service-worker.js": "/horizon-curve-visualizer/service-worker.js"
 }
