@@ -26,6 +26,7 @@ class App extends Component {
     const ctx = this.state.ctx;
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.strokeStyle = "rgba(0, 0, 0, 1)";
+
     ctx.beginPath();
     ctx.arc(
       canvasWidth / 2,
@@ -35,10 +36,29 @@ class App extends Component {
       2 * Math.PI
     );
     ctx.stroke();
+
+    ctx.beginPath();
     ctx.strokeStyle = "rgba(0, 0, 0, 0.125)";
     ctx.moveTo(0, canvasHeight / 2 - 0.5);
     ctx.lineTo(canvasWidth, canvasHeight / 2 - 0.5);
     ctx.stroke();
+
+    let ypos =
+      canvasHeight / 2 -
+      0.5 -
+      (this.getDropAngle() / this.getVerticalFOV()) * canvasHeight;
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.25)";
+    ctx.moveTo(0, ypos);
+    ctx.lineTo(canvasWidth, ypos);
+    ctx.stroke();
+
+    ctx.textAlign = "end";
+    ctx.fillText("Level", canvasWidth - 8, ypos - 8);
+  };
+
+  getVerticalFOV = () => {
+    return (params.fov * canvasHeight) / canvasWidth;
   };
 
   handleAltitudeChange = e => {
@@ -52,7 +72,8 @@ class App extends Component {
   getHorizonDistance = () => {
     const altitude = Math.max(this.getAltitude(params.unit), 0.001);
     const radius = this.getEarthRadius();
-    return Math.sqrt(Math.pow(altitude, 2) + 2 * radius * altitude);
+    // return Math.sqrt(Math.pow(altitude, 2) + 2 * radius * altitude);
+    return Math.sqrt(Math.pow(radius + altitude, 2) - Math.pow(radius, 2));
   };
   getHorizonLength = () => {
     const fov = Math.min(params.fov, 179.9) * (Math.PI / 180);
@@ -85,6 +106,17 @@ class App extends Component {
     // console.log(result);
     return result;
   };
+
+  getDropAngle = () => {
+    return (
+      Math.asin(
+        this.getHorizonDistance() /
+          (this.getEarthRadius() + this.getAltitude(params.unit))
+      ) *
+      (180 / Math.PI)
+    );
+  };
+
   render() {
     let resultUnits =
       params.unit === "feet" || params.unit === "miles"
@@ -162,6 +194,9 @@ class App extends Component {
               2
             )}{" "}
             {resultUnits}
+            <br />
+            Drop Angle: &nbsp;
+            {this.getDropAngle().toFixed(2)} Degrees
             <br />
           </div>
           <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />
